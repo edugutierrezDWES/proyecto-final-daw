@@ -87,7 +87,7 @@
 
                 <div class="form-group ">
                     <label for="rol">Tamaño de la Habitacion</label>
-                    <select class="form-control calcular" name="tipoHabitacion" id="tipo_Habitacion">
+                    <select class="form-control calcular" name="tipoHabitacion" id="tipo_habitacion">
                         <?php
                         if(isset($arrayTipoHabitaciones)){ 
                         foreach ($arrayTipoHabitaciones as $Fila => $arrayTipo) {
@@ -116,6 +116,10 @@
                         ?>
                     </select>
                 </div>
+                <div class="form-group ">
+                    <label for="rol">Precio Total</label>
+                    <input type="text" class="form-control" readonly="" id="precio_total">
+                </div>
 
                 <div class="mt-2 form-group ">
                     <button type="submit" class="btn btn_orange bt_login" name="reserva">Crear Reserva</button>
@@ -129,7 +133,7 @@
     </div>
 <?php require_once("views/scripts.html")?>
 <script type="text/javascript">
-        var today = new Date();
+        var today = new moment().format("DD/MM/YYYY");
         
         $(function() {
 
@@ -158,7 +162,7 @@
 
             $('.date').datepicker({
                 language: 'es',
-                minDate: today,
+                startDate: today,
                 autoclose: true
             }).on('change', function() {
                 Validation_Dates();
@@ -216,10 +220,14 @@
                     let today = moment(moment().format('YYYY-MM-DD'));
 
                     if(today.isSameOrBefore(date_entrada) && date_entrada.isBefore(date_salida)){
+                        
                         let precio_servicio = parseFloat(array_servicio_precio[tipo_servicio]);
+                        console.log(tipo_habitacion);
                         let precio_habitacion = parseFloat(array_Habitacion_precio[tipo_habitacion]);
                         let diffDay = date_salida.diff(date_entrada, 'days');
-                        
+                        console.log(precio_servicio);
+                        console.log(precio_habitacion);
+                        console.log(diffDay);
                         let total = ((precio_servicio + precio_habitacion) * diffDay).toFixed(2);
                         $("#precio_total").val(total +" €");
                     }
